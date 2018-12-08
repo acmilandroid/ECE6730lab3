@@ -1,0 +1,12 @@
+#!/bin/bash
+#PBS -N mv-parallel
+
+#PBS -l select=1:mem=2gb:interconnect=mx
+#PBS -l walltime=00:10:00
+#PBS -j oe
+source /etc/profile.d/modules.sh
+module purge
+module add gcc/4.8.1 openmpi/1.8.1
+NCORES=`qstat -xf $PBS_JOBID|grep List.ncpus|sed 's/^.\{26\}//'`
+cd $PBS_O_WORKDIR
+./mv-parallel matrix.bin vector.bin parallel.bin
